@@ -3,7 +3,6 @@ version: '3'
 services:
 
   mall_keeper:
-    container_name: mall_keeper
     build: .
     command: python code/app.py
     depends_on:
@@ -16,7 +15,6 @@ services:
       - .:/code
 
   plant_shop:
-    container_name: plants_shop
     build: ./plants_shop
     ports:
       - "5000:5000"

@@ -10,8 +10,12 @@
 ## Endpoints
 ```
 /shops
-/shops/goods
+/shops/<shop_id>
+/shops/<shop_id>/goods
+/shops/<shop_id>/goods/<good_id>
+/shops/<shop_id>/workers/<worker_id>
 /workers
+/workers/<mall_id>
 ```
 
 ## Sample Data
