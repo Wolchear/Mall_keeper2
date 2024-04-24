@@ -10,12 +10,14 @@ class Shop:
 		self.goods = []
 		self.workers = []
 		self.worker_id=1
+		self.good_id =1
 		
 	def addGood(self, good_name, good_type):
-		self.goods.append(good.Good(good_name, good_type))
+		self.goods.append(good.Good(good_name, good_type, self.good_id))
+		self.good_id +=1
 		
-	def addWorker(self, name, surname):
-		self.workers.append(worker.Worker(name, surname, self.name, self.worker_id))
+	def addWorker(self, name, surname, sex, position, salary):
+		self.workers.append(worker.Worker(name, surname, self.name, self.worker_id, sex, position, salary))
 		self.worker_id += 1
 		
 	def as_dict(self):

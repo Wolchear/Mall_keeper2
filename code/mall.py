@@ -3,6 +3,7 @@ import good as good
 import worker as worker
 class Mall:
 	def __init__(self):
+		self.available_plants = []
 		self.shops=[]
 		self.workers=[]
 		shop1_1 = shop.Shop("Maxima", 1)
@@ -18,16 +19,29 @@ class Mall:
 		shop2_2.addGood("Rose", "flower")
 		shop2_2.addGood("Tulip", "flower")
 		
-		shop1_1.addWorker("Davina", "Keith")
-		shop1_2.addWorker("Brynlee", "Larsen")
-		shop1_1.addWorker("Kyleigh", "Porter")
-		shop2_2.addWorker("Nancy", "Porter")
-		shop2_1.addWorker("Richard", "Hebert")
+		shop1_1.addWorker("Davina", "Keith", 'Female',  1000, 'Manager')
+		shop1_2.addWorker("Brynlee", "Larsen", 'Female', 760, 'Seller')
+		shop1_1.addWorker("Kyleigh", "Porter", 'Female',  800, 'Seller')
+		shop2_2.addWorker("Nancy", "Porter", 'Female', 1100,  'Florist')
+		shop2_1.addWorker("Richard", "Hebert", 'Male', 780, 'Seller')
 		
 		self.shops.extend([shop1_1, shop1_2, shop2_1, shop2_2, shop3_1])
 		
 		for shopa in self.shops:
 			self.workers.extend(shopa.workers)
+			
+	
+	def if_worker_exists(self, worker_id):
+		for worker in self.workers:
+			if worker.mall_id == worker_id:
+				return True;
+		return False;
+	
+	def checkAvailablePlants(self, plant_name):
+		for plant in self.available_plants:
+			if 'name' in plant and plant['name'] == plant_name:
+				return True
+		return False
 	
 	def add_shop(self, name, floor):
 		new_shop = shop.Shop(name, floor)
@@ -46,10 +60,10 @@ class Mall:
 						return True
 		return False
 			
-	def add_worker(self, shop_id, name, surname):
+	def add_worker(self, shop_id, name, surname, sex,salary, position):
 		for shop in self.shops:
 			if shop.shop_id == shop_id:
-				shop.addWorker(name, surname)
+				shop.addWorker(name, surname, sex,salary, position)
 	
 	def get_shop_goods(self, shop_id):
 		for shop in self.shops:
@@ -68,11 +82,6 @@ class Mall:
 				return True
 		return False
 		
-	def if_shop_exists(self, shop_name, shop_floor):
-		for shop in self.shops:
-			if shop.name == shop_name and shop.floor == shop_floor:
-				return True
-		return False
 	
 	def if_shop_exists_by_id(self, shop_id):
 		for shop in self.shops:
@@ -92,8 +101,4 @@ class Mall:
 		for worker in self.workers:
 			if worker.mall_id == mall_id:
 				return worker
-		return None
-		
-		
-		
-		
+		return None		
