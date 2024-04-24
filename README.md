@@ -1,11 +1,8 @@
 ﻿# Mall keeper
 
 ## How to launch
-```git clone```
-
+```git clone --recursive <url>```
 ```docker-compose up```
-
-
 
 ## Endpoints
 ```
