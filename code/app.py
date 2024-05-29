@@ -46,7 +46,19 @@ def get_shop(shop_id):
 	shop = mall.getShopById(shop_id)
 	if shop is None:
 		return jsonify({'error': 'Shop not found'}), 404
-	return jsonify(shop.as_dict())
+		
+	if shop.shop_type == 'Unspecified':
+		return jsonify(shop.as_dict()), 201
+	else:
+		available_plants = pc.init_plants_list()
+		if available_plants is None:
+				return jsonify({'error':'Could not fetch any plants'}), 404
+		plants_list = [plant for plant in available_plants if plant.get('type') == shop.shop_type]
+		return  jsonify({'shop_id': shop.shop_id,
+				'shop_name': shop.name,
+				'type': shop.shop_type,
+				'goods': plants_list,
+				'workers': shop.workers}), 201
 
 
 @app.route('/shops', methods=['POST'])
@@ -64,23 +76,37 @@ def add_shop():
 	if mall.if_shop_exists_by_name_floor(shop_name, shop_floor):
 		return jsonify({'error':'Shop on this floor already exists'}), 400
 	
-	available_plants = pc.init_plants_list()
-	if available_plants is None:
-		return jsonify({'error':'Could not fetch any plants'}), 404
 	
 	mall.add_shop(shop_name, shop_floor)
-	shop = mall.getShopByName(shop_name, shop_floor)
-	for plant in available_plants:
-		if plant.get('type') == shop_type:
-			shop.addGood(plant.get('name'), plant.get('type'))
+	if shop_type is None or shop_type == "":
+		shop = mall.getShopByName(shop_name, shop_floor)
+		return jsonify(shop.as_dict()), 201
+	else:
+		if shop_type != 'Flower' and shop_type != 'plant' and shop_type !='tree':
+			return jsonify({'error': 'forbidden plant_type',
+					'possible_types':'flower, plant, tree'}), 400
+		else:
+			shop = mall.getShopByName(shop_name, shop_floor)
+			shop.setShopType(shop_type)
+			available_plants = pc.init_plants_list()
+			if available_plants is None:
+				return jsonify({'error':'Could not fetch any plants'}), 404
+			plants_list = [plant for plant in available_plants if plant.get('type') == shop_type]
+			
+			return  jsonify({'shop_id': shop.shop_id,
+					'shop_name': shop.name,
+					'type': shop.shop_type,
+					'goods': plants_list,
+					'workers': shop.workers}), 201
 	
-	return jsonify(shop.as_dict()), 201
+	
 
 @app.route('/shops/<int:shop_id>', methods=['PUT'])
 def update_shop(shop_id):
 	updated_data = request.json
 	new_name = updated_data.get('new_name')
 	new_floor = updated_data.get('new_floor')
+	new_type = updated_data.get('new_type')
 	
 	shop = mall.getShopById(shop_id)
 	if shop is None:
@@ -91,10 +117,22 @@ def update_shop(shop_id):
 	
 	shop.name = new_name
 	shop.floor = int(new_floor)
+	shop.shop_type = new_type
 	for worker in shop.workers:
 		worker.shop = new_name
 	
-	return jsonify(shop.as_dict()), 200
+	if shop.shop_type == 'Unspecified':
+		return jsonify(shop.as_dict()), 200
+	else:	
+		available_plants = pc.init_plants_list()
+		if available_plants is None:
+			return jsonify({'error':'Could not fetch any plants'}), 404
+		plants_list = [plant for plant in available_plants if plant.get('type') == new_type]
+		return  jsonify({'shop_id': shop.shop_id,
+				'shop_name': shop.name,
+				'type': shop.new_type,
+				'goods': plants_list,
+				'workers': shop.workers}), 201
 	
 @app.route('/shops/<int:shop_id>', methods=['DELETE'])
 def delete_shop(shop_id):
@@ -146,7 +184,7 @@ def add_good(shop_id):
 	shop = mall.getShopById(shop_id)
 	if shop is None:
 		return jsonify({'error': 'Shop not found'}), 404
-		
+	
 	good = shop.getGood(good_name)
 	if good:
 		return jsonify({'error':' Good already exist'}), 400

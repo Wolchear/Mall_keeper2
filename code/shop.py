@@ -11,6 +11,7 @@ class Shop:
 		self.workers = []
 		self.worker_id=1
 		self.good_id =1
+		self.shop_type = "Unspecified"
 		
 	def addGood(self, good_name, good_type):
 		self.goods.append(good.Good(good_name, good_type, self.good_id))
@@ -25,6 +26,9 @@ class Shop:
 			if good.name == good_name:
 				return good
 		return None
+	
+	def setShopType(self, shop_type):
+		self.shop_type = shop_type
 	
 	def getGoodById(self, good_id):
 		for good in self.goods:
@@ -49,6 +53,7 @@ class Shop:
 			'shop_id': self.shop_id,
 			'name': self.name,
 			'floor': self.floor,
+			'shop_type': self.shop_type,
 			'goods': [good.as_dict() for good in self.goods],
 			'workers': [worker.as_dict() for worker in self.workers]
 		}

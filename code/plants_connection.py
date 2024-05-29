@@ -8,6 +8,8 @@ def init_plants_list():
 		return response.json()
 	return None
 
+
+
 def create_new_plant(name, plant_type, sellers):
 	data = {"name": name,
 		"type": plant_type,
