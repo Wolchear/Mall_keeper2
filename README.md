@@ -53,11 +53,11 @@
 ### Get
 All shops:
 
-```curl -X GET http://172.23.0.3:80/shops```
+```curl -X GET http://172.24.0.3:80/shops```
 
 All mall workers:
 
-```curl http://172.23.0.3:80/workers```
+```curl http://172.24.0.3:80/workers```
 
 Worker by Mall id:
 
@@ -70,24 +70,24 @@ All goods in shop by shop id:
 ### Post
 Add New shop:
 
-```curl -X POST -H "Content-Type: application/json" -d '{"name":"New Shop", "floor": 1}' http://172.23.0.3:80/shops```
+```curl -X POST -H "Content-Type: application/json" -d '{"name":"New Shop", "floor": 1}' http://172.24.0.3:80/shops```
 
 Add new good:
 
-```curl -X POST -H "Content-Type: application/json" -d '{"good_name":"Apple", "good_type":"Fruit"}'  http://172.23.0.3:80/shops/1/goods```
+```curl -X POST -H "Content-Type: application/json" -d '{"good_name":"Apple", "good_type":"Fruit"}'  http://172.24.0.3:80/shops/1/goods```
 
 Add new worker to the shop:
 
-```curl -X POST -H "Content-Type: application/json" -d '{"worker_name": "John", "worker_surname": "Doe", "sex": "male", "position": "Cashier", "salary": 700}' http://172.23.0.3:80/shops/1/workers```
+```curl -X POST -H "Content-Type: application/json" -d '{"worker_name": "John", "worker_surname": "Doe", "sex": "male", "position": "Cashier", "salary": 700}' http://172.24.0.3:80/shops/1/workers```
 
 ### Put
 Update shop name and\or floor:
 
-```curl -X PUT -H "Content-Type: application/json" -d '{"new_name": "new_name", "new_floor": 2}' http://172.23.0.3:80/shops/1```
+```curl -X PUT -H "Content-Type: application/json" -d '{"new_name": "new_name", "new_floor": 2}' http://127.0.0.1:80/shops/1```
 
 Update worker:
 
-```curl -X PUT -H "Content-Type: application/json" -d '{"salary": 3500, "position": "Manager"}' http://172.23.0.3:80/workers/1```
+```curl -X PUT -H "Content-Type: application/json" -d '{"salary": 3500, "position": "Manager"}' http://172.24.0.3:80/shop/1/workers/1```
 
 ### Delete
 Delete shop by id:

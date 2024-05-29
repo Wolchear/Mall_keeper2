@@ -16,3 +16,9 @@ def create_new_plant(name, plant_type, sellers):
 	response = requests.post(f'{service_url}/plants', json=data, headers=headers)
 	return response.status_code
 
+def get_plant(plant_id):
+	headers = {"Content-Type": "application/json"}
+	response = requests.get(f'{service_url}/plants', param={'id': plant_id})
+	if response.status_code == 200:
+		return response.json()
+	return None
